@@ -1,0 +1,74 @@
+Module 2: task 15
+genes.exp <- c(33, 50, 89, 900, 678, 100)
+TP53 <- 100 # the expression value of TP53
+
+#check for equality between genes and TP53
+for (gene in genes.exp) {
+    if (gene == 100) {
+        print(paste(gene, "is equal to TP53 expression value"))}} 
+
+#check for genes with greater expressions than TP53
+for (gene in genes.exp) {
+    if (gene > 100) {
+        print(paste(gene, "has greater expression than TP53"))}} 
+
+# combining the two loops into one loop
+for (gene in genes.exp) {
+    if (gene == 100) {
+        print(paste(gene, "is equal to TP53 expression value"))
+        } else if (gene > 100) {
+            print(paste(gene, "has greater expression than TP53")) }}
+
+# List of DNA sequences
+dna_sequences <- c("ATGCGCGGCCAATTTTGGCCGCGG")
+
+# Loop through each sequence to calculate GC content
+for (seq in dna_sequences) {
+  # Calculate the length of the sequence
+  seq_length <-nchar (seq)
+  # Count the occurrences of G and C
+  g_count <- gregexpr ("G", seq) [[1]]
+  c_count <- gregexpr ("C", seq) [[1]]
+  g_count <- ifelse(g_count[1] == -1, 0, length(g_count))
+  c_count <- ifelse(c_count[1] == -1, 0, length(c_count))
+
+  # Calculate GC content percentage
+  gc_content <- ((g_count + c_count) / seq_length) * 100
+
+  # Print the result
+  print(paste("GC content:", round(gc_content, 2), "%"))
+}
+
+Module 3 - task 3
+dna_seq <- c("A", "T", "G", "C", "A", "T", "G", "A")
+frequencies <- table (dna_seq)
+print ("Nucleotide frequencies:")
+print(frequencies)
+
+# Identify the most frequent nucleotide
+most_frequent <- names(which.max (frequencies))
+print(paste("Most frequent nucleotide:", most_frequent))
+
+task 5
+# Create a gene expression matrix
+gene_expression <- matrix(c(2.3, 4.1, 3.3, 5.5, 6.7, 
+                            3.2, 4.8, 2.9, 6.1, 7.2, 
+                            1.8, 3.5, 2.7, 4.9, 5.8), 
+                          nrow = 5, ncol = 3, byrow = TRUE)
+
+# Assign row and column names
+rownames(gene_expression) <- c("Gene A", "Gene B", "Gene C", "Gene D", "Gene E")
+colnames(gene_expression) <- c("Sample 1", "Sample 2", "Sample 3")
+
+# Print the matrix
+print("Gene Expression Matrix:")
+print(gene_expression)
+
+# Calculate average expression per gene
+mean_expression <- rowMeans(gene_expression)
+
+# Print mean expression values
+print("Mean expression per gene:")
+print(mean_expression)
+
+task 6
