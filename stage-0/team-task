@@ -1,0 +1,16 @@
+team_valine <- data.frame(
+  name = c("Yinka Adesina", "Feyisayo Lopez", "Albert Amoah", 
+          "Olorunfemi Popoola", "Abodunrin Oluwafisayo Aminat"),
+  slack_username = c("Yinka", "Feyisayo", "Albert", "Femi", "Oluwafisayo"),
+  email_address = c("yinkadvm@outlook.com", "feyilopez1@gmail.com", "albert.amoah750@gmail.com", 
+                    "phemmy.pops@gmail.com", "oluwafisayoabodunrin@yahoo.com"),
+  hobby = c("Hiking", "reading, crocheting", "Watching movies", 
+            "Watching movies", "Reading, Baking, Research"),
+  country = c("United Kingdom", "Nigeria", "Ghana", "Nigeria", "Nigeria"), 
+  discipline = c("Veterinary Medicine", "physiology", "Health", 
+                 "Cell Biology and Genetics", "Chemical Engineering"),
+  prog.lang = c("R", "Python", "R", "Python", "Python")  
+)
+
+# Print the complete team profile
+print(team_valine)
