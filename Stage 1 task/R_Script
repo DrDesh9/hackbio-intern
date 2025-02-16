@@ -1,0 +1,119 @@
+#STAGE ONE
+#Task 1 of 4
+# Function to translate DNA to protein
+translate_dna <- function(dna_sequence) {
+  genetic_code <- c(
+    TTT="F", TTC="F", TTA="L", TTG="L", CTT="L", CTC="L", CTA="L", CTG="L",
+    ATT="I", ATC="I", ATA="I", ATG="M", GTT="V", GTC="V", GTA="V", GTG="V",
+    TCT="S", TCC="S", TCA="S", TCG="S", CCT="P", CCC="P", CCA="P", CCG="P",
+    ACT="T", ACC="T", ACA="T", ACG="T", GCT="A", GCC="A", GCA="A", GCG="A",
+    TAT="Y", TAC="Y", TAA="*", TAG="*", CAT="H", CAC="H", CAA="Q", CAG="Q",
+    AAT="N", AAC="N", AAA="K", AAG="K", GAT="D", GAC="D", GAA="E", GAG="E",
+    TGT="C", TGC="C", TGA="*", TGG="W", CGT="R", CGC="R", CGA="R", CGG="R",
+    AGT="S", AGC="S", AGA="R", AGG="R", GGT="G", GGC="G", GGA="G", GGG="G"
+  )
+  # Split the DNA sequence into codons for amino-acids
+  codons <- substring(dna_sequence, seq(1, nchar(dna_sequence)-2, by=3), seq(3, nchar(dna_sequence), by=3))
+  protein <- paste(genetic_code[codons], collapse="")
+  return(protein)
+}
+
+#team serine protein sequence
+dna_sequence <- "ACGGAGGCTATGTAGAGTGAACGGATTAACGAGTAA"
+protein <- translate_dna(dna_sequence)
+print(protein) # should print "TEAM*SERINE*"
+
+#Task 2 and 3 of 4
+# Load ggplot package
+library(ggplot2)
+
+# Function to simulate growth with decline phase
+simulate_growth_with_decline <- function(time, K = 1, r = 0.5, initial_population = 0.01) {
+  lag_phase <- runif(1, 5, 15)   # Random lag phase
+  exp_phase <- runif(1, 10, 30)  # Random exponential phase
+  stat_phase <- runif(1, 10, 20) # Random stationary phase
+  death_rate <- runif(1, 0.02, 0.1) # Random decline rate
+  
+  # Adjusted times for each phase
+  adjusted_exp_time <- pmax(time - lag_phase, 0)
+  adjusted_decline_time <- pmax(time - (lag_phase + exp_phase + stat_phase), 0)
+  
+  # Calculate growth curve
+  growth_curve <- ifelse(
+    time < lag_phase, 
+    initial_population,  # Lag phase
+    ifelse(
+      time < lag_phase + exp_phase, 
+      K / (1 + ((K - initial_population) / initial_population) * exp(-r * adjusted_exp_time)),  # Exponential phase
+      ifelse(
+        time < lag_phase + exp_phase + stat_phase, 
+        K,  # Stationary phase
+        K * exp(-death_rate * adjusted_decline_time)  # Decline phase
+      )
+    )
+  )
+  return(growth_curve)
+}
+
+# Generate time points
+time_points <- seq(0, 150, by = 1)  # Extended time to include decline
+
+# Simulate a single growth curve
+single_growth_curve <- simulate_growth_with_decline(time_points)
+
+growth_curve_example <- simulate_growth_with_decline(time_points)  # Simulate one curve
+# Plot example
+plot(time_points, growth_curve_example, type="l", col="blue", lwd=2,
+     xlab="Time", ylab="Population Size", main="Bacterial Growth Curve with Decline Phase")
+
+
+# Generate 100 different growth curves
+time_points <- seq(0, 150, by=1)  # Extended time to include decline
+growth_data <- data.frame(Time=rep(time_points, 100), 
+                          Curve=rep(1:100, each=length(time_points)), 
+                          Population=unlist(lapply(1:100, function(x) simulate_growth_with_decline(time_points))))
+
+# Plot the growth curve
+ggplot(growth_data, aes(x = Time, y = Population)) +
+  geom_line(color = "blue") +
+  labs(title = "Bacterial Growth Curve with Decline Phase",
+       x = "Time",
+       y = "Population Size") +
+  theme_minimal()
+
+# Function to determine time to reach 80% of carrying capacity (K)
+time_to_80_percent <- function(time, population, K=1) {
+  threshold <- 0.8 * K
+  return(min(time[population >= threshold]))
+}
+
+# Time to 80% for first curve
+curve_1_time <- growth_data$Time[growth_data$Curve == 1]
+curve_1_population <- growth_data$Population[growth_data$Curve == 1]
+
+t80 <- time_to_80_percent(curve_1_time, curve_1_population)
+print(paste ("Time to 80% of carrying capacity:", t80))
+
+#Task 4 of 4
+# Hamming Distance Function
+hamming_distance <- function(str1, str2) {
+  # Split strings into characters
+  str1_chars <- unlist(strsplit(str1, ""))
+  str2_chars <- unlist(strsplit(str2, ""))
+  
+  # Ensure both strings are of equal length
+  if (length(str1_chars) != length(str2_chars)) {
+    stop("Strings must be of equal length")
+  }
+  
+  # Calculate Hamming distance
+  distance <- sum(str1_chars != str2_chars)
+  return(distance)
+}
+
+slack_username <- "teamserine"
+twitter_handle <- "aminoacids"
+
+
+distance <- hamming_distance(slack_username, twitter_handle)
+print(distance)
